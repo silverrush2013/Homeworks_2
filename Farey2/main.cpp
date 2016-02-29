@@ -28,11 +28,11 @@ List *Create(int n)
     Fractions->first->next = fract2;
     for (int i=0; i<=n; i++)
     {
-        fract1=Fractions->first;
-        fract2=Fractions->first->next;
-        while (fract2 != NULL)
+        fract1=Fractions->first; // указатели на первую и вторую дроби для того,чтобы значения вычислялись равномерно в зависимости от n
+        fract2=Fractions->first->next;//и для того,чтобы шли не в разброс
+        while (fract2 != NULL) //до тех пор,пока не дойдет до последнего элемента
         {
-            if ((fract1->znam+fract2->znam)==i)
+            if ((fract1->znam+fract2->znam)==i) //пока сумма знаменателей не равна шагу
             {
                 fraction *fract=new fraction;
                 fract->chis=fract1->chis+fract2->chis;
@@ -44,7 +44,7 @@ List *Create(int n)
             }
             else
             {
-                fract1=fract1->next;
+                fract1=fract1->next; // если она равна шагу пере ходим к следующей паре дробей
                 fract2=fract2->next;
             }
         }

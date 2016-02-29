@@ -58,7 +58,7 @@ int main() {
     fraction *str =  Far->first;
     while (str != NULL) //вывод на экран списка
     {
-      cout << str->chis <<'/' << str->znam << endl;
+        cout << str->chis <<'/' << str->znam << endl;
         str = str->next;
     }
 }

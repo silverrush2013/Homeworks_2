@@ -41,14 +41,14 @@ Linked_List *Create()
             Element *elm=new Element;
             elm->b=wrd[i];
             Words->last->next=elm;
-           Words->last=elm;
+            Words->last=elm;
             elm->next=NULL;
         }
     }
     return Words;
 }
 
-Linked_List *Max_Word(Linked_List *list,int &max_length )
+Linked_List *Max_Word(Linked_List *list,int *max_length )
 {
     Linked_List *Mword=new Linked_List; //искомый список - максимальное слово
     int cur_length=0;
@@ -57,37 +57,47 @@ Linked_List *Max_Word(Linked_List *list,int &max_length )
     Element *maxword; //указатель на символ максимального слова Mword
     while(chrc!=NULL)//пока не конец списка
     {
-        if (IsChar(chrc->b)==true) //если это буква
+        if (IsChar(chrc->b)) //если это буква
         {
             CurChar=chrc; //оставляем указатель на начале нового слова,чтобы потом его записать,в случае,если его длина наибольшая
-            while ((chrc!=NULL)&&(IsChar(chrc->b)==true)) //пока не конец списка и символ является буквой
+            while ((chrc!=NULL)&&(IsChar(chrc->b))) //пока не конец списка и символ является буквой
             {
                 cur_length++;
                 chrc=chrc->next;
             }
-            if (cur_length>max_length)
+            if (cur_length>*max_length)
             {
-                max_length=cur_length;
+                *max_length=cur_length;
                 maxword=Mword->first;
                 while (CurChar!=chrc)
                {
-                   if (Mword->first==NULL)
+                   if (maxword==NULL)
                    {
-                        maxword->b=CurChar->b;
-                       Mword->first=maxword;
-                       Mword->last=maxword;
-                       maxword->next=NULL;
-                        maxword=maxword->next;
+                       if (Mword->first==NULL)
+                       {
+                           Element *maxword=new Element;
+                           maxword->b=CurChar->b;
+                           Mword->first=maxword;
+                           Mword->last=maxword;
+                           maxword->next=NULL;
+                       }
+                       else
+                       {
+                           Element *maxword=new Element;
+                           maxword->b=CurChar->b;
+                           Mword->last->next=maxword;
+                           Mword->last=maxword;
+                           maxword->next=NULL;
+                       }
+                       CurChar=CurChar->next;
+
                    }
-                    else
-                    {
-                       maxword->b=CurChar->b;
-                        Mword->last->next=maxword;
-                        Mword->last=maxword;
-                        maxword->next=NULL;
-                        maxword=maxword->next;
-                    }
-                    CurChar=CurChar->next;
+                   else
+                   {
+                       maxword->b = CurChar->b;
+                       maxword=maxword->next;
+                       CurChar=CurChar->next;
+                   }
                 }
 
            }
@@ -95,9 +105,6 @@ Linked_List *Max_Word(Linked_List *list,int &max_length )
         }
         else
         {
-            do {
-                chrc = chrc->next;
-            } while (chrc->b!=' ');
             chrc = chrc->next;
         }
     }
@@ -106,13 +113,13 @@ Linked_List *Max_Word(Linked_List *list,int &max_length )
 
 int main() {
     Linked_List *list=Create();
-    int length=0;
-   Linked_List *maxword = Max_Word(list,length);
+    int max_length=0;
+   Linked_List *maxword = Max_Word(list,&max_length);
     Element *str = maxword->first;
    while (str != NULL) //вывод на экран списка
    {
         cout <<str->b;
        str = str->next;
    }
-    cout << endl<<"It is the longest word and its length is " << length;
+    cout << endl<<"It is the longest word and its length is " << max_length;
 }
